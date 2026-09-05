@@ -339,6 +339,53 @@
       updateCart();
     }
   </script>
+  <div id="productModal" style="display:none;"></div>
+  <script>
+let selectedProduct = "Produit exemple";
+let selectedPrice = 10;
+let quantity = 1;
+
+function openProduct(name, price) {
+  selectedProduct = name;
+  selectedPrice = price;
+  quantity = 1;
+
+  const modal = document.getElementById("productModal");
+  modal.style.display = "block";
+  modal.innerHTML = `
+    <div class="card">
+      <h2>${name}</h2>
+      <p>Photo produit</p>
+      <p>${price} €</p>
+
+      <button onclick="changeQuantity(-1)">−</button>
+      <strong id="quantity">1</strong>
+      <button onclick="changeQuantity(1)">+</button>
+
+      <br><br>
+      <button onclick="addSelectedToCart()">Ajouter au panier</button>
+      <button onclick="closeProduct()">Retour</button>
+    </div>
+  `;
+}
+
+function changeQuantity(change) {
+  quantity = Math.max(1, quantity + change);
+  document.getElementById("quantity").textContent = quantity;
+}
+
+function closeProduct() {
+  document.getElementById("productModal").style.display = "none";
+}
+
+function addSelectedToCart() {
+  for (let i = 0; i < quantity; i++) {
+    cart.push(selectedProduct + " — " + selectedPrice + " €");
+  }
+  updateCart();
+  closeProduct();
+}
+</script>
 
 </body>
 </html>
