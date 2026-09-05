@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SERVICE67</title>
-
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <title>SERVICE67SHOPP</title>
 
   <style>
     * {
@@ -18,170 +16,125 @@
       font-family: Arial, sans-serif;
       background: #080808;
       color: white;
+      padding-bottom: 90px;
     }
 
-    .app {
-      max-width: 600px;
-      margin: auto;
-      padding: 25px 18px 100px;
-    }
-
-    .header {
+    header {
       text-align: center;
-      padding: 30px 10px;
+      padding: 45px 20px 25px;
     }
 
     .logo {
       width: 90px;
       height: 90px;
       margin: auto;
+      border: 3px solid #55eaff;
       border-radius: 50%;
-      background: #111;
-      border: 3px solid #00e5ff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 35px;
-      box-shadow: 0 0 25px #00e5ff55;
+      font-size: 32px;
+      box-shadow: 0 0 25px #55eaff;
     }
 
     h1 {
-      margin: 15px 0 5px;
-      font-size: 30px;
+      margin-bottom: 8px;
+      font-size: 32px;
     }
 
     .online {
-      color: #00ff88;
-      font-size: 14px;
+      color: #55ff75;
+      font-weight: bold;
     }
 
-    .welcome {
-      margin-top: 25px;
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: #171717;
+      border: 1px solid #444;
+      border-radius: 25px;
       padding: 25px;
-      border-radius: 22px;
-      background: #151515;
-      border: 1px solid #292929;
+      margin-bottom: 20px;
     }
 
-    .welcome h2 {
+    .card h2 {
+      font-size: 28px;
       margin-top: 0;
-    }
-
-    .welcome p {
-      color: #aaa;
-      line-height: 1.5;
     }
 
     .button {
       display: block;
       width: 100%;
-      border: 0;
-      border-radius: 16px;
-      padding: 17px;
+      border: none;
+      border-radius: 18px;
+      padding: 18px;
       margin-top: 20px;
-      background: #00e5ff;
-      color: #001014;
-      font-size: 17px;
+      background: #67e8f9;
+      color: #06242a;
+      font-size: 18px;
       font-weight: bold;
+      text-align: center;
       cursor: pointer;
     }
 
-    .bottom {
+    nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: #101010;
-      border-top: 1px solid #222;
+      background: #171717;
+      border-top: 1px solid #333;
       display: flex;
       justify-content: space-around;
-      padding: 13px 5px 22px;
+      padding: 12px 4px 18px;
     }
 
-    .nav {
-      color: #888;
+    nav button {
+      background: none;
+      border: none;
+      color: white;
       font-size: 13px;
-      text-align: center;
     }
 
-    .nav.active {
-      color: #00e5ff;
-    }
-
-    .icon {
-      display: block;
-      font-size: 22px;
-      margin-bottom: 4px;
+    nav button:first-child {
+      color: #55eaff;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="app">
+<header>
+  <div class="logo">67</div>
+  <h1>SERVICE67SHOPP</h1>
+  <div class="online">● Boutique en ligne</div>
+</header>
 
-    <div class="header">
-      <div class="logo">67</div>
+<div class="container">
+  <div class="card">
+    <h2>Bienvenue 👋</h2>
+    <p>
+      Bienvenue sur SERVICE67SHOPP.
+      Découvrez notre catalogue et nos nouveautés.
+    </p>
 
-      <h1>SERVICE67</h1>
-
-      <div class="online">
-        ● Boutique en ligne
-      </div>
-    </div>
-
-    <div class="welcome">
-      <h2>Bienvenue 👋</h2>
-
-      <p>
-        Bienvenue sur SERVICE67.
-        Découvrez notre catalogue directement depuis Telegram.
-      </p>
-
-      <button class="button" onclick="ouvrirCatalogue()">
-        Voir le catalogue
-      </button>
-    </div>
-
+    <button class="button" onclick="alert('Catalogue SERVICE67SHOPP bientôt disponible !')">
+      Voir le catalogue
+    </button>
   </div>
+</div>
 
-  <div class="bottom">
-    <div class="nav active">
-      <span class="icon">🏠</span>
-      Accueil
-    </div>
-
-    <div class="nav">
-      <span class="icon">▦</span>
-      Catégories
-    </div>
-
-    <div class="nav">
-      <span class="icon">🛒</span>
-      Panier
-    </div>
-
-    <div class="nav">
-      <span class="icon">💬</span>
-      Contact
-    </div>
-
-    <div class="nav">
-      <span class="icon">👤</span>
-      Profil
-    </div>
-  </div>
-
-  <script>
-    const tg = window.Telegram.WebApp;
-
-    tg.ready();
-    tg.expand();
-
-    function ouvrirCatalogue() {
-      alert("La boutique SERVICE67 fonctionne !");
-    }
-  </script>
+<nav>
+  <button>🏠<br>Accueil</button>
+  <button>▦<br>Catégories</button>
+  <button>🛒<br>Panier</button>
+  <button>💬<br>Contact</button>
+  <button>👤<br>Profil</button>
+</nav>
 
 </body>
 </html>
