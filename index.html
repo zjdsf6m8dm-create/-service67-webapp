@@ -6,58 +6,112 @@
 <title>SERVICE67</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #080808;
-  color: white;
-  text-align: center;
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#080808;
+    color:white;
+    text-align:center;
 }
 
-.container {
-  max-width: 640px;
-  margin: auto;
-  padding: 20px;
+.container{
+    max-width:640px;
+    margin:auto;
+    padding:20px;
 }
 
-img {
-  width: 100%;
-  border-radius: 20px;
+img{
+    width:100%;
+    border-radius:20px;
+    display:block;
 }
 
-h1 {
-  font-size: 38px;
-  margin: 20px 0 5px;
+h1{
+    font-size:38px;
+    margin:20px 0 5px;
 }
 
-.subtitle {
-  color: #aaa;
-  margin-bottom: 25px;
+.sous-titre{
+    color:#aaa;
+    font-size:18px;
+    margin-bottom:25px;
 }
 
-.product {
-  background: #151515;
-  border-radius: 15px;
-  padding: 18px;
-  margin: 12px 0;
-  display: flex;
-  justify-content: space-between;
-  font-size: 20px;
+.publication{
+    background:#151515;
+    border-radius:18px;
+    padding:15px;
+    margin:20px 0;
+    text-align:left;
 }
 
-.price {
-  font-weight: bold;
+.publication h2{
+    margin:5px 0 10px;
 }
 
-button {
-  width: 100%;
-  padding: 16px;
-  margin-top: 20px;
-  border: 0;
-  border-radius: 15px;
-  font-size: 19px;
-  font-weight: bold;
-  cursor: pointer;
+.publication p{
+    color:#ccc;
+    line-height:1.5;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    margin-top:10px;
+    border:0;
+    border-radius:12px;
+    background:#fff;
+    color:#000;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.admin-btn{
+    background:#222;
+    color:white;
+    margin-top:30px;
+}
+
+.admin{
+    display:none;
+    background:#111;
+    border:1px solid #333;
+    border-radius:18px;
+    padding:20px;
+    margin-top:20px;
+}
+
+input,textarea{
+    width:100%;
+    box-sizing:border-box;
+    padding:13px;
+    margin:8px 0;
+    border-radius:10px;
+    border:1px solid #444;
+    background:#202020;
+    color:white;
+    font-size:16px;
+}
+
+textarea{
+    min-height:120px;
+    resize:vertical;
+}
+
+.preview{
+    margin-top:10px;
+    max-height:300px;
+    object-fit:cover;
+}
+
+.supprimer{
+    background:#441111;
+    color:white;
+}
+
+.cache{
+    display:none;
 }
 </style>
 </head>
@@ -66,39 +120,314 @@ button {
 
 <div class="container">
 
-<img src="https://placehold.co/640x360" alt="SERVICE67">
-
 <h1>SERVICE67</h1>
 
-<div class="subtitle">
+<div class="sous-titre">
 Catalogue
 </div>
 
-<div class="product">
-<span>Produit</span>
-<span class="price">20 €</span>
-</div>
+<div id="publications"></div>
 
-<div class="product">
-<span>Pack 3</span>
-<span class="price">50 €</span>
-</div>
-
-<div class="product">
-<span>Pack 5</span>
-<span class="price">70 €</span>
-</div>
-
-<div class="product">
-<span>Pack 10</span>
-<span class="price">100 €</span>
-</div>
-
-<button>
-COMMANDER
+<button class="admin-btn" onclick="ouvrirAdmin()">
+⚙️ ADMIN
 </button>
 
+<div id="admin" class="admin">
+
+<h2>Administration</h2>
+
+<input
+    type="password"
+    id="code"
+    placeholder="Code administrateur"
+>
+
+<button onclick="connexion()">
+🔐 Se connecter
+</button>
+
+<div id="panneau" class="cache">
+
+<h2>Ajouter une publication</h2>
+
+<input
+    type="text"
+    id="titre"
+    placeholder="Titre"
+>
+
+<textarea
+    id="texte"
+    placeholder="Écris ton texte ici..."
+></textarea>
+
+<input
+    type="file"
+    id="photo"
+    accept="image/*"
+    onchange="previsualiser()"
+>
+
+<img id="preview" class="preview cache">
+
+<button onclick="ajouterPublication()">
+➕ Publier
+</button>
+
+<h2>Publications</h2>
+
+<div id="listeAdmin"></div>
+
 </div>
+</div>
+
+</div>
+
+<script>
+
+const CODE_ADMIN = "140293";
+
+let publications =
+    JSON.parse(localStorage.getItem("service67_publications")) || [];
+
+
+/* AFFICHAGE */
+
+function afficherPublications(){
+
+    const zone = document.getElementById("publications");
+
+    zone.innerHTML = "";
+
+    publications.forEach((pub,index)=>{
+
+        zone.innerHTML += `
+        <div class="publication">
+
+            ${pub.photo ? `
+            <img src="${pub.photo}">
+            ` : ""}
+
+            <h2>${securiser(pub.titre)}</h2>
+
+            <p>${securiser(pub.texte).replace(/\n/g,"<br>")}</p>
+
+        </div>
+        `;
+
+    });
+
+}
+
+
+/* OUVRIR ADMIN */
+
+function ouvrirAdmin(){
+
+    const admin = document.getElementById("admin");
+
+    admin.style.display =
+        admin.style.display === "block"
+        ? "none"
+        : "block";
+}
+
+
+/* CONNEXION */
+
+function connexion(){
+
+    const code =
+        document.getElementById("code").value;
+
+    if(code === CODE_ADMIN){
+
+        document.getElementById("panneau")
+            .classList.remove("cache");
+
+        afficherAdmin();
+
+    }else{
+
+        alert("Code incorrect");
+
+    }
+}
+
+
+/* PREVISUALISATION PHOTO */
+
+function previsualiser(){
+
+    const fichier =
+        document.getElementById("photo").files[0];
+
+    if(!fichier) return;
+
+    const lecteur = new FileReader();
+
+    lecteur.onload = function(e){
+
+        const preview =
+            document.getElementById("preview");
+
+        preview.src = e.target.result;
+        preview.classList.remove("cache");
+
+    };
+
+    lecteur.readAsDataURL(fichier);
+
+}
+
+
+/* AJOUT */
+
+function ajouterPublication(){
+
+    const titre =
+        document.getElementById("titre").value.trim();
+
+    const texte =
+        document.getElementById("texte").value.trim();
+
+    const fichier =
+        document.getElementById("photo").files[0];
+
+    if(!titre || !texte){
+
+        alert("Ajoute un titre et un texte.");
+
+        return;
+    }
+
+    if(fichier){
+
+        const lecteur = new FileReader();
+
+        lecteur.onload = function(e){
+
+            enregistrer(titre,texte,e.target.result);
+
+        };
+
+        lecteur.readAsDataURL(fichier);
+
+    }else{
+
+        enregistrer(titre,texte,"");
+
+    }
+
+}
+
+
+/* ENREGISTRER */
+
+function enregistrer(titre,texte,photo){
+
+    publications.unshift({
+
+        titre:titre,
+        texte:texte,
+        photo:photo
+
+    });
+
+    localStorage.setItem(
+        "service67_publications",
+        JSON.stringify(publications)
+    );
+
+    document.getElementById("titre").value="";
+    document.getElementById("texte").value="";
+    document.getElementById("photo").value="";
+
+    document.getElementById("preview")
+        .classList.add("cache");
+
+    afficherPublications();
+    afficherAdmin();
+
+    alert("Publication ajoutée !");
+
+}
+
+
+/* ADMIN */
+
+function afficherAdmin(){
+
+    const zone =
+        document.getElementById("listeAdmin");
+
+    zone.innerHTML="";
+
+    publications.forEach((pub,index)=>{
+
+        zone.innerHTML += `
+
+        <div class="publication">
+
+            ${pub.photo ? `<img src="${pub.photo}">` : ""}
+
+            <h3>${securiser(pub.titre)}</h3>
+
+            <button
+                class="supprimer"
+                onclick="supprimerPublication(${index})">
+                🗑️ Supprimer
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+
+/* SUPPRIMER */
+
+function supprimerPublication(index){
+
+    if(confirm("Supprimer cette publication ?")){
+
+        publications.splice(index,1);
+
+        localStorage.setItem(
+            "service67_publications",
+            JSON.stringify(publications)
+        );
+
+        afficherPublications();
+        afficherAdmin();
+
+    }
+
+}
+
+
+/* PROTECTION DU TEXTE */
+
+function securiser(texte){
+
+    return texte
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* PREMIER AFFICHAGE */
+
+afficherPublications();
+
+</script>
 
 </body>
 </html>
