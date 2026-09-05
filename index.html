@@ -1,433 +1,187 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SERVICE67</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SERVICE67</title>
 
-<style>
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#080808;
-    color:white;
-    text-align:center;
-}
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-.container{
-    max-width:640px;
-    margin:auto;
-    padding:20px;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-img{
-    width:100%;
-    border-radius:20px;
-    display:block;
-}
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #080808;
+      color: white;
+    }
 
-h1{
-    font-size:38px;
-    margin:20px 0 5px;
-}
+    .app {
+      max-width: 600px;
+      margin: auto;
+      padding: 25px 18px 100px;
+    }
 
-.sous-titre{
-    color:#aaa;
-    font-size:18px;
-    margin-bottom:25px;
-}
+    .header {
+      text-align: center;
+      padding: 30px 10px;
+    }
 
-.publication{
-    background:#151515;
-    border-radius:18px;
-    padding:15px;
-    margin:20px 0;
-    text-align:left;
-}
+    .logo {
+      width: 90px;
+      height: 90px;
+      margin: auto;
+      border-radius: 50%;
+      background: #111;
+      border: 3px solid #00e5ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 35px;
+      box-shadow: 0 0 25px #00e5ff55;
+    }
 
-.publication h2{
-    margin:5px 0 10px;
-}
+    h1 {
+      margin: 15px 0 5px;
+      font-size: 30px;
+    }
 
-.publication p{
-    color:#ccc;
-    line-height:1.5;
-}
+    .online {
+      color: #00ff88;
+      font-size: 14px;
+    }
 
-button{
-    width:100%;
-    padding:14px;
-    margin-top:10px;
-    border:0;
-    border-radius:12px;
-    background:#fff;
-    color:#000;
-    font-size:17px;
-    font-weight:bold;
-    cursor:pointer;
-}
+    .welcome {
+      margin-top: 25px;
+      padding: 25px;
+      border-radius: 22px;
+      background: #151515;
+      border: 1px solid #292929;
+    }
 
-.admin-btn{
-    background:#222;
-    color:white;
-    margin-top:30px;
-}
+    .welcome h2 {
+      margin-top: 0;
+    }
 
-.admin{
-    display:none;
-    background:#111;
-    border:1px solid #333;
-    border-radius:18px;
-    padding:20px;
-    margin-top:20px;
-}
+    .welcome p {
+      color: #aaa;
+      line-height: 1.5;
+    }
 
-input,textarea{
-    width:100%;
-    box-sizing:border-box;
-    padding:13px;
-    margin:8px 0;
-    border-radius:10px;
-    border:1px solid #444;
-    background:#202020;
-    color:white;
-    font-size:16px;
-}
+    .button {
+      display: block;
+      width: 100%;
+      border: 0;
+      border-radius: 16px;
+      padding: 17px;
+      margin-top: 20px;
+      background: #00e5ff;
+      color: #001014;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-textarea{
-    min-height:120px;
-    resize:vertical;
-}
+    .bottom {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #101010;
+      border-top: 1px solid #222;
+      display: flex;
+      justify-content: space-around;
+      padding: 13px 5px 22px;
+    }
 
-.preview{
-    margin-top:10px;
-    max-height:300px;
-    object-fit:cover;
-}
+    .nav {
+      color: #888;
+      font-size: 13px;
+      text-align: center;
+    }
 
-.supprimer{
-    background:#441111;
-    color:white;
-}
+    .nav.active {
+      color: #00e5ff;
+    }
 
-.cache{
-    display:none;
-}
-</style>
+    .icon {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="container">
+  <div class="app">
 
-<h1>SERVICE67</h1>
+    <div class="header">
+      <div class="logo">67</div>
 
-<div class="sous-titre">
-Catalogue
-</div>
+      <h1>SERVICE67</h1>
 
-<div id="publications"></div>
+      <div class="online">
+        ● Boutique en ligne
+      </div>
+    </div>
 
-<button class="admin-btn" onclick="ouvrirAdmin()">
-⚙️ ADMIN
-</button>
+    <div class="welcome">
+      <h2>Bienvenue 👋</h2>
 
-<div id="admin" class="admin">
+      <p>
+        Bienvenue sur SERVICE67.
+        Découvrez notre catalogue directement depuis Telegram.
+      </p>
 
-<h2>Administration</h2>
+      <button class="button" onclick="ouvrirCatalogue()">
+        Voir le catalogue
+      </button>
+    </div>
 
-<input
-    type="password"
-    id="code"
-    placeholder="Code administrateur"
->
+  </div>
 
-<button onclick="connexion()">
-🔐 Se connecter
-</button>
+  <div class="bottom">
+    <div class="nav active">
+      <span class="icon">🏠</span>
+      Accueil
+    </div>
 
-<div id="panneau" class="cache">
+    <div class="nav">
+      <span class="icon">▦</span>
+      Catégories
+    </div>
 
-<h2>Ajouter une publication</h2>
+    <div class="nav">
+      <span class="icon">🛒</span>
+      Panier
+    </div>
 
-<input
-    type="text"
-    id="titre"
-    placeholder="Titre"
->
+    <div class="nav">
+      <span class="icon">💬</span>
+      Contact
+    </div>
 
-<textarea
-    id="texte"
-    placeholder="Écris ton texte ici..."
-></textarea>
+    <div class="nav">
+      <span class="icon">👤</span>
+      Profil
+    </div>
+  </div>
 
-<input
-    type="file"
-    id="photo"
-    accept="image/*"
-    onchange="previsualiser()"
->
+  <script>
+    const tg = window.Telegram.WebApp;
 
-<img id="preview" class="preview cache">
+    tg.ready();
+    tg.expand();
 
-<button onclick="ajouterPublication()">
-➕ Publier
-</button>
-
-<h2>Publications</h2>
-
-<div id="listeAdmin"></div>
-
-</div>
-</div>
-
-</div>
-
-<script>
-
-const CODE_ADMIN = "140293";
-
-let publications =
-    JSON.parse(localStorage.getItem("service67_publications")) || [];
-
-
-/* AFFICHAGE */
-
-function afficherPublications(){
-
-    const zone = document.getElementById("publications");
-
-    zone.innerHTML = "";
-
-    publications.forEach((pub,index)=>{
-
-        zone.innerHTML += `
-        <div class="publication">
-
-            ${pub.photo ? `
-            <img src="${pub.photo}">
-            ` : ""}
-
-            <h2>${securiser(pub.titre)}</h2>
-
-            <p>${securiser(pub.texte).replace(/\n/g,"<br>")}</p>
-
-        </div>
-        `;
-
-    });
-
-}
-
-
-/* OUVRIR ADMIN */
-
-function ouvrirAdmin(){
-
-    const admin = document.getElementById("admin");
-
-    admin.style.display =
-        admin.style.display === "block"
-        ? "none"
-        : "block";
-}
-
-
-/* CONNEXION */
-
-function connexion(){
-
-    const code =
-        document.getElementById("code").value;
-
-    if(code === CODE_ADMIN){
-
-        document.getElementById("panneau")
-            .classList.remove("cache");
-
-        afficherAdmin();
-
-    }else{
-
-        alert("Code incorrect");
-
+    function ouvrirCatalogue() {
+      alert("La boutique SERVICE67 fonctionne !");
     }
-}
-
-
-/* PREVISUALISATION PHOTO */
-
-function previsualiser(){
-
-    const fichier =
-        document.getElementById("photo").files[0];
-
-    if(!fichier) return;
-
-    const lecteur = new FileReader();
-
-    lecteur.onload = function(e){
-
-        const preview =
-            document.getElementById("preview");
-
-        preview.src = e.target.result;
-        preview.classList.remove("cache");
-
-    };
-
-    lecteur.readAsDataURL(fichier);
-
-}
-
-
-/* AJOUT */
-
-function ajouterPublication(){
-
-    const titre =
-        document.getElementById("titre").value.trim();
-
-    const texte =
-        document.getElementById("texte").value.trim();
-
-    const fichier =
-        document.getElementById("photo").files[0];
-
-    if(!titre || !texte){
-
-        alert("Ajoute un titre et un texte.");
-
-        return;
-    }
-
-    if(fichier){
-
-        const lecteur = new FileReader();
-
-        lecteur.onload = function(e){
-
-            enregistrer(titre,texte,e.target.result);
-
-        };
-
-        lecteur.readAsDataURL(fichier);
-
-    }else{
-
-        enregistrer(titre,texte,"");
-
-    }
-
-}
-
-
-/* ENREGISTRER */
-
-function enregistrer(titre,texte,photo){
-
-    publications.unshift({
-
-        titre:titre,
-        texte:texte,
-        photo:photo
-
-    });
-
-    localStorage.setItem(
-        "service67_publications",
-        JSON.stringify(publications)
-    );
-
-    document.getElementById("titre").value="";
-    document.getElementById("texte").value="";
-    document.getElementById("photo").value="";
-
-    document.getElementById("preview")
-        .classList.add("cache");
-
-    afficherPublications();
-    afficherAdmin();
-
-    alert("Publication ajoutée !");
-
-}
-
-
-/* ADMIN */
-
-function afficherAdmin(){
-
-    const zone =
-        document.getElementById("listeAdmin");
-
-    zone.innerHTML="";
-
-    publications.forEach((pub,index)=>{
-
-        zone.innerHTML += `
-
-        <div class="publication">
-
-            ${pub.photo ? `<img src="${pub.photo}">` : ""}
-
-            <h3>${securiser(pub.titre)}</h3>
-
-            <button
-                class="supprimer"
-                onclick="supprimerPublication(${index})">
-                🗑️ Supprimer
-            </button>
-
-        </div>
-
-        `;
-
-    });
-
-}
-
-
-/* SUPPRIMER */
-
-function supprimerPublication(index){
-
-    if(confirm("Supprimer cette publication ?")){
-
-        publications.splice(index,1);
-
-        localStorage.setItem(
-            "service67_publications",
-            JSON.stringify(publications)
-        );
-
-        afficherPublications();
-        afficherAdmin();
-
-    }
-
-}
-
-
-/* PROTECTION DU TEXTE */
-
-function securiser(texte){
-
-    return texte
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-
-}
-
-
-/* PREMIER AFFICHAGE */
-
-afficherPublications();
-
-</script>
+  </script>
 
 </body>
 </html>
