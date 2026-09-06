@@ -1,1 +1,1 @@
-pritnt()
+print("ok")
