@@ -2,8 +2,11 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>SERVICE67SHOPP</title>
+
+  <!-- Telegram Mini App -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
     * {
@@ -12,406 +15,1183 @@
       padding: 0;
     }
 
-    body {
-      background: #0b0b0b;
-      color: white;
-      font-family: Arial, sans-serif;
-      padding-bottom: 85px;
+    :root {
+      --bg: #080b0c;
+      --card: #121718;
+      --card2: #181e20;
+      --border: #273033;
+      --text: #ffffff;
+      --muted: #8f9a9e;
+      --accent: #55e6e6;
+      --danger: #ff5b6e;
+      --success: #66e882;
     }
 
-    header {
-      padding: 28px 20px 18px;
-      text-align: center;
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      padding-bottom: 90px;
+      min-height: 100vh;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    /* ---------- TOP ---------- */
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(8, 11, 12, 0.96);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .brand {
-      font-size: 28px;
-      font-weight: bold;
-      letter-spacing: 1px;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
     }
 
-    .online {
-      color: #67ff48;
-      margin-top: 8px;
-      font-size: 14px;
+    .status {
+      color: var(--success);
+      font-size: 12px;
     }
+
+    .round-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: white;
+      font-size: 19px;
+    }
+
+    /* ---------- PAGES ---------- */
 
     .page {
       display: none;
       padding: 18px;
+      max-width: 650px;
+      margin: auto;
     }
 
     .page.active {
       display: block;
     }
 
-    .card {
-      background: #161616;
-      border: 1px solid #2c2c2c;
-      border-radius: 22px;
-      padding: 20px;
-      margin-bottom: 16px;
+    h1 {
+      font-size: 29px;
+      margin-bottom: 8px;
     }
 
-    h1, h2 {
-      margin-bottom: 12px;
+    h2 {
+      font-size: 23px;
+      margin-bottom: 14px;
     }
 
-    p {
-      color: #cfcfcf;
+    h3 {
+      font-size: 17px;
+    }
+
+    .muted {
+      color: var(--muted);
       line-height: 1.5;
     }
 
-    .main-button {
+    /* ---------- HOME ---------- */
+
+    .hero {
+      background:
+        linear-gradient(145deg, #151b1d, #0f1314);
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      padding: 26px 20px;
+      margin-bottom: 22px;
+    }
+
+    .hero-logo {
+      width: 85px;
+      height: 85px;
+      border-radius: 22px;
+      background: var(--card2);
+      border: 1px solid #3b4a4e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 28px;
+      font-weight: 900;
+    }
+
+    .primary-btn {
       width: 100%;
-      border: none;
-      border-radius: 15px;
       padding: 16px;
-      margin-top: 18px;
+      margin-top: 20px;
+      border: 0;
+      border-radius: 15px;
+      background: var(--accent);
+      color: #061011;
       font-size: 16px;
-      font-weight: bold;
-      background: white;
-      color: black;
+      font-weight: 800;
+    }
+
+    /* ---------- CATEGORY ---------- */
+
+    .section-title {
+      margin: 22px 0 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .category-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, 1fr);
       gap: 12px;
-      margin-top: 15px;
     }
 
-    .category {
-      background: #1d1d1d;
-      border: 1px solid #333;
+    .category-card {
+      min-height: 105px;
+      background: var(--card);
+      border: 1px solid var(--border);
       border-radius: 18px;
-      padding: 25px 10px;
-      text-align: center;
-      font-weight: bold;
+      padding: 17px;
+      text-align: left;
+      color: white;
     }
 
-    .product {
-      background: #1a1a1a;
-      border: 1px solid #333;
-      border-radius: 18px;
-      padding: 15px;
-      margin-top: 12px;
-    }
-
-    .product-image {
-      height: 150px;
-      border-radius: 14px;
-      background: #292929;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #777;
+    .category-icon {
+      font-size: 26px;
+      display: block;
       margin-bottom: 12px;
     }
 
-    .product button {
+    /* ---------- PRODUCTS ---------- */
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 13px;
+    }
+
+    .product-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .product-image {
+      height: 145px;
+      background: #202728;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #728084;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .product-image img {
       width: 100%;
-      margin-top: 12px;
-      padding: 12px;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .product-info {
+      padding: 13px;
+    }
+
+    .product-name {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .product-price {
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .fav-btn {
+      position: absolute;
+      top: 9px;
+      right: 9px;
+      width: 37px;
+      height: 37px;
       border: none;
+      border-radius: 50%;
+      background: rgba(0,0,0,.65);
+      color: white;
+      font-size: 19px;
+    }
+
+    .fav-btn.active {
+      color: #ff5d75;
+    }
+
+    .small-btn {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--card2);
+      color: white;
       border-radius: 12px;
+      padding: 11px;
+      margin-top: 11px;
+      font-weight: 700;
+    }
+
+    /* ---------- MODAL PRODUIT ---------- */
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 200;
+      inset: 0;
+      background: rgba(0,0,0,.82);
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal.show {
+      display: block;
+    }
+
+    .modal-card {
+      max-width: 520px;
+      margin: 40px auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .modal-image {
+      height: 230px;
+      background: #202728;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+    }
+
+    .modal-content {
+      padding: 20px;
+    }
+
+    .close-btn {
+      float: right;
+      border: 0;
+      background: var(--card2);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+
+    .quantity {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      margin-top: 20px;
+      padding: 8px;
+    }
+
+    .qty-btn {
+      width: 44px;
+      height: 44px;
+      border: 0;
+      border-radius: 12px;
+      background: #252e30;
+      color: white;
+      font-size: 22px;
+    }
+
+    .qty-value {
+      font-size: 18px;
       font-weight: bold;
     }
 
-    .cart-empty {
-      text-align: center;
-      padding: 35px 10px;
-      color: #777;
+    /* ---------- PANIER ---------- */
+
+    .cart-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 15px;
+      margin-bottom: 12px;
     }
 
-    nav {
+    .cart-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .remove-btn {
+      border: none;
+      background: transparent;
+      color: var(--danger);
+      font-size: 18px;
+    }
+
+    .cart-qty {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 13px;
+    }
+
+    .mini-qty {
+      width: 37px;
+      height: 37px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--card2);
+      color: white;
+    }
+
+    .cart-summary {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+      margin-top: 20px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 9px 0;
+    }
+
+    .total-row {
+      font-size: 19px;
+      font-weight: 900;
+      border-top: 1px solid var(--border);
+      padding-top: 15px;
+      margin-top: 15px;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: var(--muted);
+      padding: 55px 15px;
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+    }
+
+    /* ---------- PROFILE / CONTACT ---------- */
+
+    .info-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 13px;
+    }
+
+    .profile-avatar {
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      background: var(--card2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+    }
+
+    /* ---------- LANGUE ---------- */
+
+    .language-screen {
       position: fixed;
+      z-index: 500;
+      inset: 0;
+      background: #080b0c;
+      padding: 30px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .language-box {
+      width: 100%;
+      max-width: 450px;
+    }
+
+    .language-box h1 {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .language-box .muted {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .language-btn {
+      width: 100%;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--card);
+      color: white;
+      font-size: 16px;
+      text-align: left;
+      margin-bottom: 10px;
+    }
+
+    /* ---------- BOTTOM NAV ---------- */
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
       left: 0;
       right: 0;
-      bottom: 0;
-      height: 72px;
-      background: #111;
-      border-top: 1px solid #2f2f2f;
+      height: 78px;
+      background: #0d1112;
+      border-top: 1px solid var(--border);
       display: flex;
       z-index: 100;
     }
 
-    nav button {
+    .bottom-nav button {
       flex: 1;
-      border: none;
+      border: 0;
       background: transparent;
-      color: #888;
-      font-size: 11px;
+      color: #727e81;
+      font-size: 10px;
+      padding: 8px 2px;
     }
 
-    nav button span {
+    .bottom-nav button.active {
+      color: var(--accent);
+    }
+
+    .nav-icon {
       display: block;
       font-size: 21px;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
     }
 
-    nav button.active {
+    .badge {
+      display: inline-flex;
+      min-width: 19px;
+      height: 19px;
+      border-radius: 10px;
+      background: var(--danger);
       color: white;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      margin-left: 2px;
+    }
+
+    @media(max-width: 350px) {
+      .product-grid,
+      .category-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <header>
-    <div class="brand">SERVICE67SHOPP</div>
-    <div class="online">● Boutique en ligne</div>
+  <!-- CHOIX LANGUE -->
+  <div id="languageScreen" class="language-screen">
+    <div class="language-box">
+      <h1>Bienvenue 👋</h1>
+      <p class="muted">Choisissez votre langue</p>
+
+ <button class="language-btn" onclick="chooseLanguage('fr')">🇫🇷 Français</button>
+      <button class="language-btn" onclick="chooseLanguage('en')">🇬🇧 English</button>
+      <button class="language-btn" onclick="chooseLanguage('es')">🇪🇸 Español</button>
+      <button class="language-btn" onclick="chooseLanguage('de')">🇩🇪 Deutsch</button>
+      <button class="language-btn" onclick="chooseLanguage('it')">🇮🇹 Italiano</button>
+    </div>
+  </div>
+
+  <header class="topbar">
+    <div>
+      <div class="brand">SERVICE67SHOPP</div>
+      <div class="status">● Boutique en ligne</div>
+    </div>
+
+    <button class="round-btn" onclick="showPage('favoris')">❤️</button>
   </header>
 
-  <section id="accueil" class="page active">
-    <div class="card">
+  <main id="accueil" class="page active">
+    <div class="hero">
+      <div class="hero-logo">67</div>
       <h1>Bienvenue 👋</h1>
-      <p>
-        Découvrez nos catégories et nos nouveautés.
+      <p class="muted">
+        Découvrez notre sélection directement depuis Telegram.
       </p>
 
-      <button class="main-button" onclick="showPage('categories')">
+      <button class="primary-btn" onclick="showPage('categories')">
         Voir la boutique
       </button>
     </div>
-  </section>
 
-  <section id="categories" class="page">
-    <div class="card">
-      <h2>Catégories</h2>
-
-      <div class="category-grid">
-        <div class="category" onclick="showPage('produits')">
-          Catégorie 1
-        </div>
-
-        <div class="category" onclick="showPage('produits')">
-          Catégorie 2
-        </div>
-
-        <div class="category" onclick="showPage('produits')">
-          Catégorie 3
-        </div>
-
-        <div class="category" onclick="showPage('produits')">
-          Catégorie 4
-        </div>
-      </div>
+    <div class="section-title">
+      <h2>Nouveautés</h2>
     </div>
-  </section>
 
-  <section id="produits" class="page">
-    <div class="card">
+    <div id="homeProducts" class="product-grid"></div>
+  </main>
+
+  <main id="categories" class="page">
+    <h1>Catégories</h1>
+    <p class="muted">Choisissez une catégorie.</p>
+
+    <div class="category-grid" style="margin-top:20px;">
+      <button class="category-card" onclick="openCategory('categorie1')">
+        <span class="category-icon">🍽️</span>
+        Catégorie 1
+      </button>
+
+      <button class="category-card" onclick="openCategory('categorie2')">
+        <span class="category-icon">🥤</span>
+        Catégorie 2
+      </button>
+
+      <button class="category-card" onclick="openCategory('categorie3')">
+        <span class="category-icon">🍪</span>
+        Catégorie 3
+      </button>
+
+      <button class="category-card" onclick="openCategory('categorie4')">
+        <span class="category-icon">⭐</span>
+        Catégorie 4
+      </button>
+    </div>
+
+    <div class="section-title">
       <h2>Produits</h2>
+    </div>
 
-      <div class="product">
-        <div class="product-image">
-          Photo produit
+    <div id="categoryProducts" class="product-grid"></div>
+  </main>
+
+  <main id="favoris" class="page">
+    <h1>Favoris ❤️</h1>
+    <div id="favoriteProducts" class="product-grid"></div>
+  </main>
+
+  <main id="panier" class="page">
+    <h1>Mon panier 🛒</h1>
+    <div id="cartItems"></div>
+
+    <div id="cartSummary" class="cart-summary" style="display:none;">
+      <div class="summary-row">
+        <span>Sous-total</span>
+        <strong id="subtotal">0 €</strong>
+      </div>
+
+      <div class="summary-row total-row">
+        <span>Total</span>
+        <span id="total">0 €</span>
+      </div>
+
+      <button class="primary-btn" onclick="placeOrder()">
+        Commander
+      </button>
+    </div>
+  </main>
+
+  <main id="historique" class="page">
+    <h1>Mes commandes 📦</h1>
+
+    <div id="orderHistory">
+      <div class="empty-state">
+        <div class="empty-icon">📦</div>
+        Aucune commande pour le moment.
+      </div>
+    </div>
+  </main>
+
+  <main id="contact" class="page">
+    <h1>Contact 💬</h1>
+
+    <div class="info-card">
+      <h3>Besoin d’aide ?</h3>
+      <p class="muted" style="margin-top:8px;">
+        Les informations de contact seront ajoutées plus tard.
+      </p>
+    </div>
+  </main>
+
+  <main id="profil" class="page">
+    <div class="profile-avatar">👤</div>
+
+    <h1 id="profileName">Mon profil</h1>
+    <p id="profileUsername" class="muted">Utilisateur Telegram</p>
+
+    <div class="info-card" style="margin-top:22px;">
+      <h3>🌍 Langue</h3>
+      <p id="selectedLanguage" class="muted" style="margin-top:7px;">
+        Français
+      </p>
+    </div>
+
+    <button class="small-btn" onclick="changeLanguage()">
+      Changer de langue
+    </button>
+
+    <button class="small-btn" onclick="showPage('historique')">
+      📦 Historique des commandes
+    </button>
+
+    <button class="small-btn" onclick="showPage('contact')">
+      💬 Contact
+    </button>
+  </main>
+
+  <div id="productModal" class="modal">
+    <div class="modal-card">
+      <div class="modal-image" id="modalImage">
+        Photo produit
+      </div>
+
+      <div class="modal-content">
+        <button class="close-btn" onclick="closeProduct()">✕</button>
+
+        <h2 id="modalName">Produit</h2>
+
+        <p id="modalDescription" class="muted">
+          Description du produit.
+        </p>
+
+        <h2 id="modalPrice" style="color:var(--accent); margin-top:15px;">
+          Prix
+        </h2>
+
+        <div class="quantity">
+          <button class="qty-btn" onclick="changeModalQuantity(-1)">−</button>
+          <span id="modalQuantity" class="qty-value">1</span>
+          <button class="qty-btn" onclick="changeModalQuantity(1)">+</button>
         </div>
 
-        <h3>Produit exemple</h3>
-        <p>Prix à ajouter plus tard</p>
-
-        <button onclick="addToCart('Produit exemple')">
+        <button class="primary-btn" onclick="addCurrentProductToCart()">
           Ajouter au panier
         </button>
       </div>
-
-      <div class="product">
-        <div class="product-image">
-          Photo produit
-        </div>
-
-        <h3>Produit exemple 2</h3>
-        <p>Prix à ajouter plus tard</p>
-
-        <button onclick="addToCart('Produit exemple 2')">
-          Ajouter au panier
-        </button>
-      </div>
     </div>
-  </section>
+  </div>
 
-  <section id="panier" class="page">
-    <div class="card">
-      <h2>Panier 🛒</h2>
-      <div id="cartContent" class="cart-empty">
-        Ton panier est vide.
-      </div>
-    </div>
-  </section>
-
-  <section id="contact" class="page">
-    <div class="card">
-      <h2>Contact 💬</h2>
-      <p>
-        Tu pourras ajouter ici ton Telegram, Instagram,
-        WhatsApp ou autre moyen de contact.
-      </p>
-    </div>
-  </section>
-
-  <section id="profil" class="page">
-    <div class="card">
-      <h2>Profil 👤</h2>
-      <p>
-        Ici on pourra afficher le profil du client,
-        ses commandes et son historique.
-      </p>
-    </div>
-  </section>
-
-  <nav>
-    <button class="active" onclick="showPage('accueil', this)">
-      <span>🏠</span>
+  <nav class="bottom-nav">
+    <button class="active" data-page="accueil" onclick="showPage('accueil', this)">
+      <span class="nav-icon">🏠</span>
       Accueil
     </button>
 
-    <button onclick="showPage('categories', this)">
-      <span>▦</span>
+    <button data-page="categories" onclick="showPage('categories', this)">
+      <span class="nav-icon">▦</span>
       Catégories
     </button>
 
-    <button onclick="showPage('panier', this)">
-      <span>🛒</span>
+    <button data-page="favoris" onclick="showPage('favoris', this)">
+      <span class="nav-icon">❤️</span>
+      Favoris
+    </button>
+
+    <button data-page="panier" onclick="showPage('panier', this)">
+      <span class="nav-icon">🛒</span>
       Panier
+      <span id="cartBadge" class="badge" style="display:none;">0</span>
     </button>
 
-    <button onclick="showPage('contact', this)">
-      <span>💬</span>
-      Contact
-    </button>
-
-    <button onclick="showPage('profil', this)">
-      <span>👤</span>
+    <button data-page="profil" onclick="showPage('profil', this)">
+      <span class="nav-icon">👤</span>
       Profil
     </button>
   </nav>
 
   <script>
-    const cart = [];
+    const tg = window.Telegram?.WebApp;
+
+    if (tg) {
+      tg.ready();
+      tg.expand();
+    }
+
+    const products = [
+      {
+        id: 1,
+        name: "Produit exemple 1",
+        category: "categorie1",
+        price: 0,
+        priceText: "Prix à ajouter",
+        description: "Description à ajouter plus tard.",
+        image: ""
+      },
+      {
+        id: 2,
+        name: "Produit exemple 2",
+        category: "categorie1",
+        price: 0,
+        priceText: "Prix à ajouter",
+        description: "Description à ajouter plus tard.",
+        image: ""
+      },
+      {
+        id: 3,
+        name: "Produit exemple 3",
+        category: "categorie2",
+        price: 0,
+        priceText: "Prix à ajouter",
+        description: "Description à ajouter plus tard.",
+        image: ""
+      },
+      {
+        id: 4,
+        name: "Produit exemple 4",
+        category: "categorie3",
+        price: 0,
+        priceText: "Prix à ajouter",
+        description: "Description à ajouter plus tard.",
+        image: ""
+      }
+    ];
+
+    let cart = [];
+    let favorites = [];
+    let orders = [];
+    let currentProduct = null;
+    let modalQuantity = 1;
+    let language = "fr";
 
     function showPage(pageId, button) {
-      document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
+      document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
       });
 
-      document.getElementById(pageId).classList.add('active');
+      const page = document.getElementById(pageId);
 
-      document.querySelectorAll('nav button').forEach(btn => {
-        btn.classList.remove('active');
-      });
-
-      if (button) {
-        button.classList.add('active');
+      if (page) {
+        page.classList.add("active");
       }
+
+      document.querySelectorAll(".bottom-nav button").forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      let navButton = button;
+
+      if (!navButton) {
+        navButton = document.querySelector(
+          '.bottom-nav button[data-page="' + pageId + '"]'
+        );
+      }
+
+      if (navButton) {
+        navButton.classList.add("active");
+      }
+
+      if (pageId === "favoris") renderFavorites();
+      if (pageId === "panier") renderCart();
+      if (pageId === "historique") renderOrders();
+
+      window.scrollTo(0, 0);
     }
 
-    function addToCart(productName) {
-      cart.push(productName);
-      updateCart();
-      alert(productName + ' ajouté au panier');
+    function productCard(product) {
+      const liked = favorites.includes(product.id);
+
+      return `
+        <div class="product-card">
+          <button
+            class="fav-btn ${liked ? "active" : ""}"
+            onclick="event.stopPropagation(); toggleFavorite(${product.id})">
+            ${liked ? "♥" : "♡"}
+          </button>
+
+          <div class="product-image" onclick="openProduct(${product.id})">
+            ${
+              product.image
+                ? `<img src="${product.image}" alt="${product.name}">`
+                : "Photo produit"
+            }
+          </div>
+
+          <div class="product-info">
+            <div class="product-name">${product.name}</div>
+            <div class="product-price">${product.priceText}</div>
+
+            <button class="small-btn" onclick="openProduct(${product.id})">
+              Voir le produit
+            </button>
+          </div>
+        </div>
+      `;
     }
 
-    function updateCart() {
-      const cartContent = document.getElementById('cartContent');
+    function renderHomeProducts() {
+      document.getElementById("homeProducts").innerHTML =
+        products.slice(0, 4).map(productCard).join("");
+    }
+
+    function openCategory(category) {
+      showPage("categories");
+
+      const filtered = products.filter(
+        product => product.category === category
+      );
+
+      document.getElementById("categoryProducts").innerHTML =
+        filtered.length
+          ? filtered.map(productCard).join("")
+          : `
+            <div class="empty-state" style="grid-column:1/-1;">
+              Aucun produit dans cette catégorie pour le moment.
+            </div>
+          `;
+    }
+
+    function openProduct(productId) {
+      currentProduct = products.find(p => p.id === productId);
+
+      if (!currentProduct) return;
+
+      modalQuantity = 1;
+
+      document.getElementById("modalName").textContent =
+        currentProduct.name;
+
+      document.getElementById("modalDescription").textContent =
+        currentProduct.description;
+
+      document.getElementById("modalPrice").textContent =
+        currentProduct.priceText;
+
+      document.getElementById("modalQuantity").textContent =
+        modalQuantity;
+
+      document.getElementById("modalImage").innerHTML =
+        currentProduct.image
+          ? `<img src="${currentProduct.image}" style="width:100%;height:100%;object-fit:cover;">`
+          : "Photo produit";
+
+      document.getElementById("productModal").classList.add("show");
+    }
+
+    function closeProduct() {
+      document.getElementById("productModal").classList.remove("show");
+    }
+
+    function changeModalQuantity(change) {
+      modalQuantity += change;
+
+      if (modalQuantity < 1) {
+        modalQuantity = 1;
+      }
+
+      document.getElementById("modalQuantity").textContent =
+        modalQuantity;
+    }
+
+    function toggleFavorite(productId) {
+      const index = favorites.indexOf(productId);
+
+      if (index >= 0) {
+        favorites.splice(index, 1);
+      } else {
+        favorites.push(productId);
+      }
+
+      renderHomeProducts();
+      renderFavorites();
+    }
+
+    function renderFavorites() {
+      const favoriteProducts =
+        products.filter(p => favorites.includes(p.id));
+
+      document.getElementById("favoriteProducts").innerHTML =
+        favoriteProducts.length
+          ? favoriteProducts.map(productCard).join("")
+          : `
+            <div class="empty-state" style="grid-column:1/-1;">
+              <div class="empty-icon">♡</div>
+              Aucun favori pour le moment.
+            </div>
+          `;
+    }
+
+    function addCurrentProductToCart() {
+      if (!currentProduct) return;
+
+      const existing = cart.find(
+        item => item.id === currentProduct.id
+      );
+
+      if (existing) {
+        existing.quantity += modalQuantity;
+      } else {
+        cart.push({
+          id: currentProduct.id,
+          name: currentProduct.name,
+          price: currentProduct.price,
+          priceText: currentProduct.priceText,
+          quantity: modalQuantity
+        });
+      }
+
+      updateCartBadge();
+      closeProduct();
+    }
+
+    function changeCartQuantity(productId, change) {
+      const item = cart.find(
+        product => product.id === productId
+      );
+
+      if (!item) return;
+
+      item.quantity += change;
+
+      if (item.quantity <= 0) {
+        cart = cart.filter(product => product.id !== productId);
+      }
+
+      renderCart();
+      updateCartBadge();
+    }
+
+    function removeCartItem(productId) {
+      cart = cart.filter(
+        product => product.id !== productId
+      );
+
+      renderCart();
+      updateCartBadge();
+    }
+
+    function renderCart() {
+      const cartItems = document.getElementById("cartItems");
+      const cartSummary = document.getElementById("cartSummary");
 
       if (cart.length === 0) {
-        cartContent.innerHTML = 'Ton panier est vide.';
+        cartItems.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">🛒</div>
+            Ton panier est vide.
+          </div>
+        `;
+
+        cartSummary.style.display = "none";
         return;
       }
 
-      cartContent.innerHTML = '';
+      cartItems.innerHTML =
+        cart.map(item => `
+          <div class="cart-item">
+            <div class="cart-top">
+              <div>
+                <strong>${item.name}</strong>
+                <div class="muted">${item.priceText}</div>
+              </div>
 
-      cart.forEach((product, index) => {
-        const item = document.createElement('div');
-        item.className = 'product';
-        item.innerHTML =
-          '<strong>' + product + '</strong>' +
-          '<button onclick="removeFromCart(' + index + ')">Retirer</button>';
+              <button
+                class="remove-btn"
+                onclick="removeCartItem(${item.id})">
+                ✕
+              </button>
+            </div>
 
-        cartContent.appendChild(item);
-      });
+            <div class="cart-qty">
+              <button
+                class="mini-qty"
+                onclick="changeCartQuantity(${item.id}, -1)">
+                −
+              </button>
+
+              <strong>${item.quantity}</strong>
+
+              <button
+                class="mini-qty"
+                onclick="changeCartQuantity(${item.id}, 1)">
+                +
+              </button>
+            </div>
+          </div>
+        `).join("");
+
+      const subtotal =
+        cart.reduce(
+          (total, item) => total + item.price * item.quantity,
+          0
+        );
+
+      document.getElementById("subtotal").textContent =
+        subtotal.toFixed(2) + " €";
+
+      document.getElementById("total").textContent =
+        subtotal.toFixed(2) + " €";
+
+      cartSummary.style.display = "block";
     }
 
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      updateCart();
+    function updateCartBadge() {
+      const badge = document.getElementById("cartBadge");
+
+      const quantity =
+        cart.reduce(
+          (total, item) => total + item.quantity,
+          0
+        );
+
+      if (quantity > 0) {
+        badge.textContent = quantity;
+        badge.style.display = "inline-flex";
+      } else {
+        badge.style.display = "none";
+      }
     }
-  </script>
-  <div id="productModal" style="display:none;"></div>
-  <script>
-let selectedProduct = "Produit exemple";
-let selectedPrice = 10;
-let quantity = 1;
 
-function openProduct(name, price) {
-  selectedProduct = name;
-  selectedPrice = price;
-  quantity = 1;
+    function placeOrder() {
+      if (cart.length === 0) return;
 
-  const modal = document.getElementById("productModal");
-  modal.style.display = "block";
-  modal.innerHTML = `
-    <div class="card">
-      <h2>${name}</h2>
-      <p>Photo produit</p>
-      <p>${price} €</p>
+      const order = {
+        id: Date.now(),
+        date: new Date().toLocaleString(),
+        items: JSON.parse(JSON.stringify(cart)),
+        status: "Commande reçue"
+      };
 
-      <button onclick="changeQuantity(-1)">−</button>
-      <strong id="quantity">1</strong>
-      <button onclick="changeQuantity(1)">+</button>
+      orders.unshift(order);
 
-      <br><br>
-      <button onclick="addSelectedToCart()">Ajouter au panier</button>
-      <button onclick="closeProduct()">Retour</button>
-    </div>
-  `;
-}
+      if (tg) {
+        try {
+          tg.sendData(
+            JSON.stringify({
+              type: "new_order",
+              order: order
+            })
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      }
 
-function changeQuantity(change) {
-  quantity = Math.max(1, quantity + change);
-  document.getElementById("quantity").textContent = quantity;
-}
+      cart = [];
 
-function closeProduct() {
-  document.getElementById("productModal").style.display = "none";
-}
+      updateCartBadge();
+      renderCart();
+      renderOrders();
 
-function addSelectedToCart() {
-  for (let i = 0; i < quantity; i++) {
-    cart.push(selectedProduct + " — " + selectedPrice + " €");
-  }
-  updateCart();
-  closeProduct();
-}
-</script>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script>
-  const tg = window.Telegram.WebApp;
+      alert("Commande enregistrée ✅");
 
-  tg.ready();
-  tg.expand();
+      showPage("historique");
+    }
 
-  tg.MainButton.setText("Voir mon panier");
+    function renderOrders() {
+      const history = document.getElementById("orderHistory");
 
-  tg.MainButton.onClick(function () {
-    const commande = {
-      type: "commande",
-      panier: cart
+      if (orders.length === 0) {
+        history.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">📦</div>
+            Aucune commande pour le moment.
+          </div>
+        `;
+        return;
+      }
+
+      history.innerHTML =
+        orders.map(order => `
+          <div class="info-card">
+            <strong>
+              Commande #${String(order.id).slice(-6)}
+            </strong>
+
+            <div class="muted" style="margin-top:7px;">
+              ${order.date}
+            </div>
+
+            <div style="margin-top:12px;">
+              ${order.items.length} article(s)
+            </div>
+
+            <div style="color:var(--success);margin-top:10px;">
+              ● ${order.status}
+            </div>
+          </div>
+        `).join("");
+    }
+
+    const languageNames = {
+      fr: "Français",
+      en: "English",
+      es: "Español",
+      de: "Deutsch",
+      it: "Italiano"
     };
 
-    tg.sendData(JSON.stringify(commande));
-  });
+    function chooseLanguage(selected) {
+      language = selected;
 
-  function afficherBoutonTelegram() {
-    if (cart.length > 0) {
-      tg.MainButton.show();
-    } else {
-      tg.MainButton.hide();
+      document.getElementById("selectedLanguage").textContent =
+        languageNames[selected];
+
+      document.getElementById("languageScreen").style.display =
+        "none";
     }
-  }
-</script>
-<img src="IMG_0938.jpeg"> 
+
+    function changeLanguage() {
+      document.getElementById("languageScreen").style.display =
+        "flex";
+    }
+
+    function loadTelegramUser() {
+      if (!tg || !tg.initDataUnsafe) return;
+
+      const user = tg.initDataUnsafe.user;
+
+      if (!user) return;
+
+      const fullName =
+        [user.first_name, user.last_name]
+          .filter(Boolean)
+          .join(" ");
+
+      if (fullName) {
+        document.getElementById("profileName").textContent =
+          fullName;
+      }
+
+      if (user.username) {
+        document.getElementById("profileUsername").textContent =
+          "@" + user.username;
+      }
+    }
+
+    renderHomeProducts();
+    renderFavorites();
+    renderCart();
+    loadTelegramUser();
+  </script>
+
 </body>
-</html>
+</html>   
+        
