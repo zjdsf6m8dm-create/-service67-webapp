@@ -630,42 +630,21 @@
     </div>
   </main>
 
-  <main id="contact" class="page">
-    <h1>Contact 💬</h1>
+<main id="contact" class="page">
+  <h1>Contact 💬</h1>
 
-    <div class="info-card">
-      <h3>Besoin d’aide ?</h3>
-      <p class="muted" style="margin-top:8px;">
-        Les informations de contact seront ajoutées plus tard.
-      </p>
-    </div>
-  </main>
+  <div class="card">
+    <h3>Besoin d’aide ?</h3>
+    <p class="muted">
+      Une question ou un problème avec ta commande ?
+      Contacte directement notre support.
+    </p>
 
-  <main id="profil" class="page">
-    <div class="profile-avatar">👤</div>
-
-    <h1 id="profileName">Mon profil</h1>
-    <p id="profileUsername" class="muted">Utilisateur Telegram</p>
-
-    <div class="info-card" style="margin-top:22px;">
-      <h3>🌍 Langue</h3>
-      <p id="selectedLanguage" class="muted" style="margin-top:7px;">
-        Français
-      </p>
-    </div>
-
-    <button class="small-btn" onclick="changeLanguage()">
-      Changer de langue
+    <button class="small-btn" onclick="openContact()">
+      💬 Contacter le support
     </button>
-
-    <button class="small-btn" onclick="showPage('historique')">
-      📦 Historique des commandes
-    </button>
-
-    <button class="small-btn" onclick="showPage('contact')">
-      💬 Contact
-    </button>
-  </main>
+  </div>
+</main>
 
   <div id="productModal" class="modal">
     <div class="modal-card">
@@ -1190,6 +1169,9 @@
     renderFavorites();
     renderCart();
     loadTelegramUser();
+   function openContact() {
+  alert("Le contact du support sera ajouté ici.");
+} 
   </script>
 
 </body>
